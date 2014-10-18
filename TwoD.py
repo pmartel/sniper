@@ -4,16 +4,22 @@ class TwoD:
 ##    cols =0
 ##    rows=0
 
-    def __init__(self, rows, cols):
+    def __init__(self, rows, cols, val =[]):
         self.rows = rows
         self.cols = cols
         self.arr = []
         rObj =[]
         for r in range(rows):
-            rObj.append([])
+            rObj.append(val)
         for c in range(cols):
             # just having append(rObj) points to one copy
             self.arr.append(rObj.copy())
+
+    def fill(self, val):
+        """ load with a single value """
+        for r in range(self.rows):
+            for c in range(self.cols):
+                self.arr[c][r] = val
 
     def display(self):
         """ print the 2D array with row and column stuff on the outside"""
