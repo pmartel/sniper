@@ -15,12 +15,6 @@ class TwoD:
             # just having append(rObj) points to one copy
             self.arr.append(rObj.copy())
 
-    def fill(self, val):
-        """ load with a single value """
-        for r in range(self.rows):
-            for c in range(self.cols):
-                self.arr[c][r] = val
-
     def display(self):
         """ print the 2D array with row and column stuff on the outside"""
         t = '\t|' # marker
@@ -34,6 +28,13 @@ class TwoD:
                 v = self.arr[c][r]
                 print( t,v, end='')
             print()
+        print()
+
+    def fill(self, val):
+        """ load with a single value """
+        for r in range(self.rows):
+            for c in range(self.cols):
+                self.arr[c][r] = val
 
     def get(self, row, col ):
         """ get a value.  return None if outside of range """
