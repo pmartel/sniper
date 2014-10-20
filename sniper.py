@@ -8,16 +8,46 @@ from TwoD import *
 def relax(a):
     rn = a.rows
     cn = a.cols
-    new = TwoD(rn+2,cn+2,0)
-    # copy to middle 
+    new = TwoD(rn,cn)
+
     for r in range(rn):
         for c in range(cn):
-            new.arr[c+1][r+1] = a.arr[c][r]
-    # relax
+            new.arr[c][r] = a.arr[c][r]
+    # relax  this takes care of edges, but is messy
     for r in range(rn):
-        for c in range(cn):
-            a.arr[c][r] = (new.arr[c][r+1] + new.arr[c+2][r+1] +
-                           new.arr[c+1][r] + new.arr[c+1][r+2])/4
+        if r == 0:
+            for c in range(cn):
+                if c == 0:
+                    a.arr[c][r] = ( new.arr[c][r+1] +
+                                    new.arr[c+1][r])/2
+                elif c == cn-1:
+                    a.arr[c][r] = ( new.arr[c][r+1] +
+                                   new.arr[c-1][r])/2
+                else:
+                    a.arr[c][r] = ( new.arr[c][r+1] +
+                                   new.arr[c-1][r] + new.arr[c+1][r])/3
+        elif r == rn-1:
+            for c in range(cn):
+                if c ==0:
+                    a.arr[c][r] = (new.arr[c][r-1] +
+                                    new.arr[c+1][r])/2
+                elif c == cn-1:
+                    a.arr[c][r] = (new.arr[c][r-1] +
+                                   new.arr[c-1][r])/2
+                else:
+                    a.arr[c][r] = (new.arr[c][r-1] + 
+                                   new.arr[c-1][r] + new.arr[c+1][r])/3
+        else:
+            for c in range(cn):
+                if c ==0:
+                    a.arr[c][r] = (new.arr[c][r-1] + new.arr[c][r+1] +
+                                    new.arr[c+1][r])/3
+                elif c == cn-1:
+                    a.arr[c][r] = (new.arr[c][r-1] + new.arr[c][r+1] +
+                                   new.arr[c-1][r])/3
+                else:
+                    a.arr[c][r] = (new.arr[c][r-1] + new.arr[c][r+1] +
+                                   new.arr[c-1][r] + new.arr[c+1][r])/4
             
             
     reInit(a)
