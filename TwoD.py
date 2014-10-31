@@ -1,13 +1,14 @@
 # developing code for working with a 2-D array
 class TwoD:
-##    arr = []
+##    arr = [] # don't need to set these up explicitly
 ##    cols =0
 ##    rows=0
 
-    def __init__(self, rows, cols, val =[]):
+    def __init__(self, rows, cols, val =[],digits =4):
         self.rows = rows
         self.cols = cols
         self.arr = []
+        self.digits = digits
         rObj =[]
         for r in range(rows):
             rObj.append(val)
@@ -26,7 +27,7 @@ class TwoD:
             print(r, end='') # row stuff
             for c in range(self.cols):
                 v = self.arr[c][r]
-                print( t,v, end='')
+                print( t,round(v,self.digits), end='')
             print()
         print()
 
