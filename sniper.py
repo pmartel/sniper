@@ -79,17 +79,18 @@ def resistor(a,center):
     c = b + center.c1
     current = 0
     # current in resistor north of "1" point
+    # note when accessing TwoD.arr directly, it's .arr[c][r]
     if r > 0:
-        current += 1 - a.arr[r-1][c]
+        current += 1 - a.arr[c][r-1]
     #south
     if r < a.rows-1:
-        current += 1 - a.arr[r+1][c]
+        current += 1 - a.arr[c][r+1]
     #east
     if c < a.cols-1:
-        current += 1 - a.arr[r][c+1]
+        current += 1 - a.arr[c+1][r]
     #west
     if c > 0:
-        current += 1 - a.arr[r][c-1]
+        current += 1 - a.arr[c-1][r]
 
     return 1/current
 
@@ -97,18 +98,18 @@ def CheckEdges(a):
     """ check that all edge cells of the array are 0.  if not say "at limit" """
     lim = False
     for r in range(a.rows):
-        if a.arr[r][0] != 0:
+        if a.arr[0][r] != 0:
             lim = True
             break
-        if a.arr[r][a.cols-1] != 0:
+        if a.arr[a.cols-1][r] != 0:
             lim = True
             break
     if not( lim ):
         for c in range(a.cols):
-            if a.arr[0][c] != 0:
+            if a.arr[c][0] != 0:
                 lim = True
                 break
-            if a.arr[a.rows-1][c] != 0:
+            if a.arr[c][a.rows-1] != 0:
                 lim = True
                 break
     if lim:
@@ -116,9 +117,9 @@ def CheckEdges(a):
 
         
 #main
-center = Center(2, 3, 0, 2, 1,0) #"sniping" grid
+#center = Center(2, 3, 0, 2, 1,0) #"sniping" grid
 #center = Center(2, 2, 0, 1, 1,0)
-#center = Center(1, 1, 0, 0, None,None)
+center = Center(1, 1, 0, 0, None,None)
 
 b = int(input('blanks around center? '))
 arr = TwoD(2*b+center.rSize,2*b+center.cSize,0)
