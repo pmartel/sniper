@@ -4,6 +4,8 @@ rows and columns around the basic 1x2 grid.  Solve the problem with a relaxation
 method and print the result """
 
 from TwoD import *
+# for timing 
+from time import *
 
 class Center:
     """set up a variable center array (store the info)"""
@@ -25,6 +27,7 @@ def relax(a):
     for r in range(rn):
         for c in range(cn):
             new.arr[c][r] = a.arr[c][r]
+
     # this takes care of edges, but is messy
     for r in range(rn):
         if r == 0:
@@ -117,9 +120,9 @@ def CheckEdges(a):
 
         
 #main
-#center = Center(2, 3, 0, 2, 1,0) #"sniping" grid
+center = Center(2, 3, 0, 2, 1,0) #"sniping" grid
 #center = Center(2, 2, 0, 1, 1,0)
-center = Center(1, 1, 0, 0, None,None)
+#center = Center(1, 1, 0, 0, None,None)
 
 b = int(input('blanks around center? '))
 arr = TwoD(2*b+center.rSize,2*b+center.cSize,0)
@@ -130,7 +133,9 @@ reInit(arr,center)
 #arr.display()
 
 again = 'y'
+res=[]
 while again != 'n':
+    t = time()
     # it takes 2 relaxation steps to change the resistance
     relax(arr)
     reInit(arr,center)
@@ -138,10 +143,16 @@ while again != 'n':
     reInit(arr,center)
     #arr.display()
     r = resistor(arr,center)
+    res.append(r)
     print('resistance=',round(r,6))
+    print( 'in ', time()-t,' seconds')
     CheckEdges(arr)
     again = input('again?(y/n)')
-arr.display()
+
+#arr.display()
+# print out the list of approximations to the value
+for n in res:
+    print(n)
 
 
 
