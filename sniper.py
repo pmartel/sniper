@@ -66,22 +66,60 @@ def relax(a):
 def reInit(a,center):
     b=int((a.rows-center.rSize)/2)
     a.set(b+center.r1,b+center.c1,1)
-    a.set(b+center.r0,b+center.c0,0)
+    if not( center.r0 == None): # handle not having a ground point
+        a.set(b+center.r0,b+center.c0,0)
 
 def resistor(a,center):
+    """ For the 1 Volt point, the resistance is 1/(sum of currents in
+        adjacent resistors).  The current in one of those resistors is
+        1-(voltage at adjacent node)"""
     b=int((a.rows-center.rSize)/2)
-    if b == 0:
-        current = (1-a.arr[1][0]) + (1-a.arr[2][1])
-    else:
-        current = (1-a.arr[b+1][b]) + (1-a.arr[b+3][b]) +\
-        (1-a.arr[b+2][b-1]) + (1-a.arr[b+2][b+1])
+    # row and column of "1" point
+    r = b + center.r1
+    c = b + center.c1
+    current = 0
+    # current in resistor north of "1" point
+    if r > 0:
+        current += 1 - a.arr[r-1][c]
+    #south
+    if r < a.rows-1:
+        current += 1 - a.arr[r+1][c]
+    #east
+    if c < a.cols-1:
+        current += 1 - a.arr[r][c+1]
+    #west
+    if c > 0:
+        current += 1 - a.arr[r][c-1]
+
     return 1/current
+
+def CheckEdges(a):
+    """ check that all edge cells of the array are 0.  if not say "at limit" """
+    lim = False
+    for r in range(a.rows):
+        if a.arr[r][0] != 0:
+            lim = True
+            break
+        if a.arr[r][a.cols-1] != 0:
+            lim = True
+            break
+    if not( lim ):
+        for c in range(a.cols):
+            if a.arr[0][c] != 0:
+                lim = True
+                break
+            if a.arr[a.rows-1][c] != 0:
+                lim = True
+                break
+    if lim:
+        print( "at limit")
+
         
-
-
 #main
-center = Center(2, 3, 0, 2, 1,0)
+center = Center(2, 3, 0, 2, 1,0) #"sniping" grid
 #center = Center(2, 2, 0, 1, 1,0)
+#center = Center(1, 1, 0, 0, None,None)
+
 b = int(input('blanks around center? '))
 arr = TwoD(2*b+center.rSize,2*b+center.cSize,0)
 
@@ -100,6 +138,7 @@ while again != 'n':
     #arr.display()
     r = resistor(arr,center)
     print('resistance=',round(r,6))
+    CheckEdges(arr)
     again = input('again?(y/n)')
 arr.display()
 
