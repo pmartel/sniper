@@ -4,7 +4,7 @@ class TwoD:
 ##    cols =0
 ##    rows=0
 
-    def __init__(self, rows, cols, val =[],digits =4):
+    def __init__(self, rows, cols, val = 0,digits =4):
         self.rows = rows
         self.cols = cols
         self.arr = []
@@ -16,10 +16,24 @@ class TwoD:
             # just having append(rObj) points to one copy
             self.arr.append(rObj.copy())
 
+    def copy(self, m):
+        """copy the contents of TwoD m to self  if reasonable. return true if copied"""
+        if type(self) != type(m):
+            return False
+        if self.rows != m.rows:
+            return False
+        if self.cols != m.cols:
+            return False
+        for r in range(self.rows):
+            for c in range(self.cols):
+                self.arr[c][r] = m.arr[c][r]
+        return True
+                
+        
     def display(self):
         """ print the 2D array with row and column stuff on the outside"""
         t = '\t|' # marker
-        print('____',end='')
+        print('___',end='')
         for c in range(self.cols): # column stuff
             print( t,c, end='')
         print()
@@ -71,7 +85,9 @@ class TwoD:
 if __name__ == '__main__':
     a = TwoD(4,3)
     b = TwoD(3,5)
+    c = TwoD(4,3)
     a.seqFill()
+    print('Class TwoD demo')
     a.display()
     print()
     print(a.get(1,2))
@@ -80,6 +96,9 @@ if __name__ == '__main__':
     print(a.set(2,2,-1))
     print()
     a.display()
+    c.copy(a)
+    print('c')
+    print(c.arr)
         
 
     
