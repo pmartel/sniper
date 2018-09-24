@@ -30,17 +30,23 @@ class TwoD:
         return True
                 
         
-    def display(self):
+    def display(self, left= 0,right=None,top=0,bot=None):
         """ print the 2D array with row and column stuff on the outside"""
         t = '\t|' # marker
+        if right == None :
+            right = self.cols
+        if bot == None :
+            bot = self.rows
+        
         print('___',end='')
-        for c in range(self.cols): # column stuff
+        for c in range(left,right): # column stuff
             print( t,c, end='')
         print()
-        for r in range(self.rows):
+        for r in range(top,bot):
             print(r, end='') # row stuff
-            for c in range(self.cols):
+            for c in range(left,right):
                 v = self.arr[c][r]
+                #print('debug',r,c,v)
                 print( t,round(v,self.digits), end='')
             print()
         print()
@@ -88,6 +94,7 @@ if __name__ == '__main__':
     c = TwoD(4,3)
     a.seqFill()
     print('Class TwoD demo')
+    print('a')
     a.display()
     print()
     print(a.get(1,2))
@@ -95,7 +102,11 @@ if __name__ == '__main__':
     print(a.get(2,3))
     print(a.set(2,2,-1))
     print()
+    print('modified a')
     a.display()
+    b.seqFill()
+    print('b')
+    b.display()
     c.copy(a)
     print('c')
     print(c.arr)
