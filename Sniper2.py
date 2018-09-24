@@ -28,18 +28,20 @@ def InitCondition(m): # set 1 volt and gnd nodes in the middle of array m
 def Relax(m,aux): # do a relaxation on TwoD m using TwoD aux as an auxiliary
     for r in range(m.rows):
         for c in range( m.cols):
-            sum = RelaxGet(m,r-1,c)
-            sum += RelaxGet(m,r+1,c)
-            sum += RelaxGet(m,r,c-1)
-            sum += RelaxGet(m,r,c+1)
-            sum /= 4
+            me = m.get(r,c)
+            sum = me
+            sum += RelaxGet(m,r-1,c,me)
+            sum += RelaxGet(m,r+1,c,me)
+            sum += RelaxGet(m,r,c-1,me)
+            sum += RelaxGet(m,r,c+1,me)
+            sum /= 5.
             aux.set(r,c,sum)
     m.copy(aux)
             
-def RelaxGet(m,r,c):
+def RelaxGet(m,r,c,default):
     ret = m.get(r,c)
     if ret == None :
-        ret = 0.5
+        ret = default
     return ret
 
 
