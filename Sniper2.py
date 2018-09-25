@@ -6,7 +6,7 @@ from TwoD import *
 # for timing 
 from time import *
 
-def Current(m):
+def Current1(m): #current from 1v source
     r = int(m.rows/2) 
     c = int(m.cols/2)
     #the location of the 1 volt node
@@ -19,6 +19,21 @@ def Current(m):
     cur += (1-m.get(r1+1,c1))
     return cur
 
+
+def Current0(m): # current into ground
+    r = int(m.rows/2) 
+    c = int(m.cols/2)
+    #the location of the 1 volt node
+    r1 = r
+    c1 = c-1
+    
+    cur = (-m.get(r1,c1-1)) #voltage difference through 1 Ohm
+    cur += (-m.get(r1,c1+1))
+    cur += (-m.get(r1-1,c1))
+    cur += (-m.get(r1+1,c1))
+    return cur
+
+    
 def InitCondition(m): # set 1 volt and gnd nodes in the middle of array m
     r = int(m.rows/2) 
     c = int(m.cols/2)
@@ -46,19 +61,23 @@ def RelaxGet(m,r,c,default):
 
 
 #main
-#get matrix size
+#get matrix size, loops default voltage
 s = int(input('matrix size? '))
+l = int(input('loops? '))
+v = float(input("starting voltage? "))
 
 # set up matrices
-m1 = TwoD( s, s, 0.5)  #0.5 is close to the voltage on most nodes of a large grid
+m1 = TwoD( s, s, v)  #0.5 is close to the voltage on most nodes of a large grid
 m2 = TwoD( s, s )
 
 #run the loop s/2 times the effect of relaxation should hit the 'walls' then
-for i in range(int(m1.cols/2)):
+for i in range(l):
     InitCondition(m1)
-    c = Current(m1)
-    print(i+1,1/c)
+    c1 = Current1(m1)
+    c0 = Current0(m1)
+    print(i+1,1/c1,1/c0)
     #15m1.display()
     Relax(m1,m2)
 
+InitCondition(m1)  #to have m1 display ready
 #m1.display()
