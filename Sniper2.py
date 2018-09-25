@@ -74,8 +74,17 @@ m2 = TwoD( s, s )
 for i in range(l):
     InitCondition(m1)
     c1 = Current1(m1)
+    if c1 == 0. :
+        r1 = 'und'
+    else:
+        r1=1/c1
+    
     c0 = Current0(m1)
-    print(i+1,1/c1,1/c0)
+    if c0 == 0. :
+        r0 = 'und'
+    else:
+        r0=1/c0
+    print(i+1,r1,r0)
     #15m1.display()
     Relax(m1,m2)
 
