@@ -16,6 +16,14 @@ class TwoD:
             # just having append(rObj) points to one copy
             self.arr.append(rObj.copy())
 
+    def average(self):
+        "calculate the average value of the matrix"
+        s=0
+        for r in range(self.rows):
+            for c in range(self.cols):
+                s += self.arr[c][r]
+        return s/(self.rows*self.cols)
+        
     def copy(self, m):
         """copy the contents of TwoD m to self  if reasonable. return true if copied"""
         if type(self) != type(m):
@@ -110,6 +118,6 @@ if __name__ == '__main__':
     c.copy(a)
     print('c')
     print(c.arr)
-        
+    print('average b=',b.average())    
 
     
